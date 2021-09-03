@@ -30,10 +30,6 @@ end
 
 const metrics = StatsdMetrics()
 
-function __init__()
-    publish_metrics_from(metrics)
-end
-
 Base.@kwdef mutable struct StatsdExporter
     # How often we should be sending metric updates to statds backend.
     send_interval::Period = Second(60)
@@ -77,6 +73,7 @@ Starts background statsd exporter thread if `data.send_interval` is positive. Th
 background thread will be stored in `data.exporter_thread`.
 """
 function start_statsd_exporter!(data::StatsdExporter)
+    publish_metrics_from(metrics)
     if Dates.value(data.send_interval) > 0
         data.periodic_task = @spawn_sticky_periodic_task(
             "StatsdExporter",

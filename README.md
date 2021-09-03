@@ -5,13 +5,16 @@ what is happening within the server (a program running on a single machine).
 Metrics are primarily numeric representations of either current state (e.g. how much disk
 are we using at the moment) or event counters (how many requests did we handle so far).
 
-Currently, the two flavors of metrics are supported:
+Currently, two flavors of metrics are supported:
 
   1. `Gauge`s represent current state of some measure, such as "bytes stored on disk". The
      value can fluctuate and change over time.
   2. `Counter`s count events of interest or aggregations of values over time. The guarantee
      is that the value of a counter never decreases and what usually matters is not the value
      itself but rather how it changes over time.
+
+And two backends are supported: DataDog and Prometheus. See the `examples` directory for
+how to set up in either configuration.
 
 ## Basic operation
 
@@ -60,10 +63,10 @@ Keep in mind the following rules:
 ## Instrumenting your code
 
 To instrument your module with server metrics you will first need to create a subclass of
-`RAI_Metrics.AbstractMetricCollection` that will hold your metrics.
+`ServerMetrics.AbstractMetricCollection` that will hold your metrics.
 
 ```julia
-using RAI_Metrics
+using ServerMetrics
 
 Base.@kwdef struct MyModuleMetrics <: AbstractMetricCollection
     lunches_consumed = Counter()
@@ -78,7 +81,7 @@ want to create a global const instance of this structure and add it to the defau
 const metrics = MyModuleMetrics()
 
 function __init__()
-  RAI_Metrics.publish_metrics_from(metrics)
+  ServerMetrics.publish_metrics_from(metrics)
 end
 ```
 
@@ -126,9 +129,9 @@ Depending on platform (assuming linux), follow the default installation instruct
 
 Then configure prometheus to scrape the local instance by adding the following section into prometheus.yml:
 ```
-  - job_name: 'rai-compute'
+  - job_name: 'your-local-job'
     scrape_interval: 1s
     static_configs:
-      - targets: ['localhost:8010']
+      - targets: ['localhost:<your-port>']
 ```
 Upon starting grafana, you can connect it to prometheus data source which should give you access to all exported metrics.
