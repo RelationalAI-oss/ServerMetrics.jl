@@ -17,5 +17,5 @@ ServerMetrics.@spawn_sticky_periodic_task "UptimeTracker" Dates.Second(1) begin
 end
 
 HTTP.serve() do http_request
-    ServerMetrics.handle_metrics(http_request)
+    ServerMetrics.handle_metrics()
 end

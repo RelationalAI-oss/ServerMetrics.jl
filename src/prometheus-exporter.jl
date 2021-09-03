@@ -46,7 +46,7 @@ function print_metric(b::Base.IOBuffer, m::AbstractMetric)
 end
 
 """
-    handle_metrics(::HTTP.Request)
+    handle_metrics()
 
 This http handler renders contents of the _default registry_ in a prometheus-compatible text
 format.
@@ -54,7 +54,7 @@ format.
 This can be registered to `/metrics` HTTP endpoint to enable integration with prometheus
 monitoring system.
 """
-function handle_metrics(::HTTP.Request)
+function handle_metrics()
     buffer = Base.IOBuffer()
     registry = get_default_registry()
     for (name, metric) in registry.metrics
