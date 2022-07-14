@@ -54,7 +54,7 @@ format.
 This can be registered to `/metrics` HTTP endpoint to enable integration with prometheus
 monitoring system.
 """
-function handle_metrics()
+function handle_metrics(request)
     buffer = Base.IOBuffer()
     registry = get_default_registry()
     for (name, metric) in registry.metrics
