@@ -154,6 +154,7 @@ end
 end
 
 @testcase "StatsdExporter not exporting with send_interval=0" begin
+    clear_registry!(get_default_registry())
     mock_statsd = MockStatsdBackend()
     exporter = StatsdExporter(
         send_interval=Millisecond(0),
