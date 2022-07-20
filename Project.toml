@@ -1,6 +1,6 @@
 name = "ServerMetrics"
 uuid = "77d5efa4-d40d-4655-9c8b-8729ad2310a1"
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
